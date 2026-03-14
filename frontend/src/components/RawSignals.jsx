@@ -14,6 +14,7 @@ const DISPLAY_FEATURES = [
   { key: 'time_to_first_interaction_ms', label: 'Time to First Action', unit: ' ms' },
   { key: 'headless_browser_score', label: 'Headless Score', unit: '' },
   { key: 'hardware_concurrency', label: 'CPU Cores', unit: '' },
+  { key: 'honeypot_triggered', label: 'Honeypot', unit: '' },
 ];
 
 export default function RawSignals({ features }) {
@@ -37,11 +38,34 @@ export default function RawSignals({ features }) {
 
   // Color code values (headless, jitter, etc.)
   const getValueColor = (key, val) => {
+    if (key === 'honeypot_triggered') return val >= 1.0 ? 'var(--red)' : 'var(--green)';
     if (key === 'headless_browser_score') return val > 0.5 ? 'var(--red)' : 'var(--green)';
     if (key === 'keystroke_rhythm_entropy') return val > 2.0 ? 'var(--green)' : val > 0.8 ? 'var(--amber)' : 'var(--red)';
     if (key === 'mouse_jitter_index') return val > 10 ? 'var(--green)' : val > 3 ? 'var(--amber)' : 'var(--red)';
     if (key === 'backspace_ratio') return val > 0.01 ? 'var(--green)' : 'var(--amber)';
     return 'var(--text-primary)';
+  };
+
+  const renderValue = (f) => {
+    const val = features[f.key];
+    if (f.key === 'honeypot_triggered') {
+      const triggered = val >= 1.0;
+      return (
+        <span style={{
+          display: 'inline-block',
+          padding: '2px 8px',
+          borderRadius: '999px',
+          fontSize: '0.68rem',
+          fontWeight: 700,
+          letterSpacing: '0.04em',
+          background: triggered ? 'rgba(239,68,68,0.12)' : 'rgba(34,197,94,0.12)',
+          color: triggered ? 'var(--red)' : 'var(--green)',
+        }}>
+          {triggered ? '🍯 TRIGGERED' : '✓ CLEAN'}
+        </span>
+      );
+    }
+    return <span style={{ color: getValueColor(f.key, val) }}>{fmt(val)}{f.unit}</span>;
   };
 
   return (
@@ -61,8 +85,8 @@ export default function RawSignals({ features }) {
           {DISPLAY_FEATURES.map(f => (
             <tr key={f.key}>
               <td>{f.label}</td>
-              <td style={{ color: getValueColor(f.key, features[f.key]) }}>
-                {fmt(features[f.key])}{f.unit}
+              <td style={{ textAlign: 'right' }}>
+                {renderValue(f)}
               </td>
             </tr>
           ))}

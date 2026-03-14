@@ -59,6 +59,7 @@ def generate_human_sample() -> dict:
         "headless_browser_score": headless_browser_score,
         "screen_resolution_common": screen_resolution_common,
         "hardware_concurrency": float(hardware_concurrency),
+        "honeypot_triggered": 0.0,  # Humans never fill the honeypot
         "label": 1,  # 1 = human
     }
 
@@ -129,6 +130,8 @@ def generate_bot_sample(sophistication: float = 0.0) -> dict:
         "headless_browser_score": headless_browser_score,
         "screen_resolution_common": float(screen_resolution_common),
         "hardware_concurrency": hardware_concurrency,
+        # Bots sometimes fill honeypot (more common for unsophisticated bots)
+        "honeypot_triggered": 1.0 if (s < 0.4 and np.random.random() < 0.35) else 0.0,
         "label": 0,  # 0 = bot
     }
 

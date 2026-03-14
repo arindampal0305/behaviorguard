@@ -326,6 +326,13 @@
           autocomplete="current-password" required />
       </div>
 
+      <!-- Honeypot: hidden from real users, bots often auto-fill this -->
+      <div class="hp-field" aria-hidden="true"
+        style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" autocomplete="off" tabindex="-1" />
+      </div>
+
       <button type="submit" class="btn-login" id="submit-btn">
         <span class="btn-text">Sign in</span>
         <div class="spinner"></div>

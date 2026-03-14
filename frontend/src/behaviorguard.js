@@ -90,6 +90,13 @@
     if (submitted) return;
     submitted = true;
 
+    // ─── Honeypot check ──────────────────────────────────────────────
+    const hpField = document.getElementById('username');
+    const honeypotTriggered = !!(hpField && hpField.value && hpField.value.length > 0);
+    if (honeypotTriggered) {
+      console.warn('[BehaviorGuard] 🍯 Honeypot triggered — bot detected!');
+    }
+
     const payload = {
       session_id: sessionId,
       mouse_events: mouseEvents,
@@ -98,33 +105,28 @@
       fingerprint: collectFingerprint(),
       page_load_time: pageLoadTime,
       submit_time: Date.now(),
+      honeypot_triggered: honeypotTriggered,
     };
 
     console.log('[BehaviorGuard] Submitting signals:', {
       mouse: mouseEvents.length,
       keys: keyEventsList.length,
       scroll: scrollEvents.length,
+      honeypot: honeypotTriggered,
     });
 
-    // Use sendBeacon for reliability on form submit, fallback to fetch
-    const json = JSON.stringify(payload);
-    if (navigator.sendBeacon && event && event.type === 'submit') {
-      const blob = new Blob([json], { type: 'application/json' });
-      navigator.sendBeacon(API_ENDPOINT, blob);
-    } else {
-      fetch(API_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: json,
-        keepalive: true,
-      }).then(res => res.json()).then(data => {
-        console.log('[BehaviorGuard] Result:', data.verdict, data.score);
-        // Dispatch custom event for any page handler
-        document.dispatchEvent(new CustomEvent('behaviorguard:result', { detail: data }));
-      }).catch(err => {
-        console.warn('[BehaviorGuard] Failed to submit:', err);
-      });
-    }
+    // Always use fetch so the result event can fire (sendBeacon is fire-and-forget)
+    fetch(API_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      keepalive: true,
+    }).then(res => res.json()).then(data => {
+      console.log('[BehaviorGuard] Result:', data.verdict, data.score);
+      document.dispatchEvent(new CustomEvent('behaviorguard:result', { detail: data }));
+    }).catch(err => {
+      console.warn('[BehaviorGuard] Failed to submit:', err);
+    });
   }
 
   // ─── Auto-submit on form submit ──────────────────────────────────

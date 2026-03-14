@@ -27,6 +27,7 @@ FEATURE_NAMES = [
     "headless_browser_score",
     "screen_resolution_common",
     "hardware_concurrency",
+    "honeypot_triggered",   # 1.0 if honeypot was filled, 0.0 otherwise
 ]
 
 # Common human screen resolutions
@@ -269,8 +270,33 @@ def _compute_fingerprint_features(fingerprint: Dict) -> Dict[str, float]:
 def engineer_features(payload: Dict[str, Any]) -> Dict[str, float]:
     """
     Main entry point. Takes the full raw signal payload and returns
-    a dict of 18 engineered features ready for ML inference.
+    a dict of engineered features ready for ML inference.
     """
+    # ── Honeypot fast-path ──────────────────────────────────────────────
+    # If the honeypot field was filled, override immediately — definitive bot.
+    if payload.get("honeypot_triggered", False):
+        return {
+            "mouse_event_count": 0.0,
+            "mouse_avg_speed": 0.0,
+            "mouse_jitter_index": 0.0,
+            "mouse_path_curvature": 1.0,
+            "mouse_pause_count": 0.0,
+            "keystroke_count": 0.0,
+            "avg_keystroke_gap_ms": 0.0,
+            "keystroke_rhythm_entropy": 0.0,
+            "backspace_ratio": 0.0,
+            "typing_speed_wpm": 0.0,
+            "scroll_event_count": 0.0,
+            "scroll_direction_changes": 0.0,
+            "time_to_first_interaction_ms": 0.0,
+            "form_fill_duration_ms": 0.0,
+            "timezone_language_match": 0.0,
+            "headless_browser_score": 1.0,  # Maximum bot signal
+            "screen_resolution_common": 0.0,
+            "hardware_concurrency": 0.0,
+            "honeypot_triggered": 1.0,
+        }
+
     mouse_feats = _compute_mouse_features(payload.get("mouse_events", []))
     key_feats = _compute_keyboard_features(payload.get("key_events", []))
     scroll_feats = _compute_scroll_features(payload.get("scroll_events", []))
@@ -283,8 +309,9 @@ def engineer_features(payload: Dict[str, Any]) -> Dict[str, float]:
     features.update(scroll_feats)
     features.update(timing_feats)
     features.update(fp_feats)
+    features["honeypot_triggered"] = 0.0  # Not triggered
 
-    # Ensure all 18 features are present
+    # Ensure all features are present
     for name in FEATURE_NAMES:
         features.setdefault(name, 0.0)
 
