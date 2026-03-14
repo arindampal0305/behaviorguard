@@ -184,7 +184,7 @@ export default function App() {
             Simulate Bot
           </button>
           <a
-            href="http://localhost:5173/login.html"
+            href="/login.html"
             className="btn btn-secondary"
             target="_blank"
             rel="noreferrer"
