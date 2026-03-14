@@ -10,6 +10,7 @@ import SessionFeed from './components/SessionFeed.jsx';
 import VerdictBanner from './components/VerdictBanner.jsx';
 import AdversarialSlider from './components/AdversarialSlider.jsx';
 import RawSignals from './components/RawSignals.jsx';
+import EnterpriseIntegration from './components/EnterpriseIntegration.jsx';
 
 const API = 'https://behaviorguard-backend.onrender.com';
 const WS_URL = 'wss://behaviorguard-backend.onrender.com/ws/stream';
@@ -238,6 +239,9 @@ export default function App() {
           recommendation={recommendation}
           processingMs={processingMs}
         />
+
+        {/* Row 7: Enterprise Integration */}
+        <EnterpriseIntegration />
 
       </main>
     </div>
