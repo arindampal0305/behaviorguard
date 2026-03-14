@@ -123,6 +123,8 @@ def _process_payload(payload: Dict[str, Any]) -> Dict:
         "processing_time_ms": processing_ms,
         "recommendation": recommendation,
         "timestamp": time.time(),
+        # Include raw mouse events (capped) for path replay on the dashboard
+        "mouse_events": payload.get("mouse_events", [])[:300],
     }
     return session
 
@@ -173,6 +175,7 @@ async def analyze(request: AnalyzeRequest):
         "processing_time_ms": result["processing_time_ms"],
         "recommendation": result["recommendation"],
         "timestamp": result["timestamp"],
+        "mouse_events": result["mouse_events"],
     })
 
     return result
@@ -207,6 +210,7 @@ async def simulate(session_type: str, sophistication: float = 0.0):
         "processing_time_ms": result["processing_time_ms"],
         "recommendation": result["recommendation"],
         "timestamp": result["timestamp"],
+        "mouse_events": result["mouse_events"],
     })
 
     return result

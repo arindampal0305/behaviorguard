@@ -102,11 +102,8 @@ export default function App() {
       const filtered = prev.filter(s => s.session_id !== data.session_id);
       return [data, ...filtered].slice(0, 50);
     });
-    // Set mouse events if available from recent simulate call
-    // (they come from the /simulate endpoint response which has raw events)
-    if (data.mouse_events) {
-      setMouseEvents(data.mouse_events);
-    }
+    // Always update mouse events — now guaranteed by the backend
+    setMouseEvents(data.mouse_events ?? []);
   }, []);
 
   // ----------------------------------------------------------------
@@ -213,7 +210,7 @@ export default function App() {
 
         {/* Row 3: Mouse Path + Confidence Timeline */}
         <div className="grid-2">
-          <MousePathReplay mouseEvents={mouseEvents} verdict={verdict} />
+          <MousePathReplay mouseEvents={mouseEvents} verdict={verdict} features={features} />
           <ConfidenceTimeline history={sessionHistory} />
         </div>
 
