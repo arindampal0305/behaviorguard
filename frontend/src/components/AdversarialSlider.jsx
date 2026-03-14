@@ -1,7 +1,7 @@
 // AdversarialSlider.jsx — Bot sophistication stress test control
 import React, { useState } from 'react';
 
-const API = 'http://localhost:8000';
+const API = 'https://behaviorguard-backend.onrender.com';
 
 export default function AdversarialSlider({ onResult, loading, setLoading }) {
   const [sophistication, setSophistication] = useState(30);
