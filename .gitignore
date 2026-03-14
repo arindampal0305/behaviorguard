@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+.venv/
+
+# Model artifacts (large files - regenerate with python model.py)
+backend/model_artifacts/xgboost_model.pkl
+backend/model_artifacts/shap_explainer.pkl
+
+# Debug/temp files
+backend/debug_human.py
+backend/out_bot.txt
+
+# Node
+frontend/node_modules/
+
+# Vite
+frontend/dist/
+
+# OS
+.DS_Store
+Thumbs.db
