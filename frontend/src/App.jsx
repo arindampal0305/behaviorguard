@@ -11,6 +11,7 @@ import VerdictBanner from './components/VerdictBanner.jsx';
 import AdversarialSlider from './components/AdversarialSlider.jsx';
 import RawSignals from './components/RawSignals.jsx';
 import EnterpriseIntegration from './components/EnterpriseIntegration.jsx';
+import MouseHeatmap from './components/MouseHeatmap.jsx';
 
 const API = 'https://behaviorguard-backend.onrender.com';
 const WS_URL = 'wss://behaviorguard-backend.onrender.com/ws/stream';
@@ -209,9 +210,10 @@ export default function App() {
           <RawSignals features={features} />
         </div>
 
-        {/* Row 3: Mouse Path + Confidence Timeline */}
-        <div className="grid-2">
+        {/* Row 3: Mouse Path + Heatmap + Confidence Timeline */}
+        <div className="grid-3">
           <MousePathReplay mouseEvents={mouseEvents} verdict={verdict} features={features} />
+          <MouseHeatmap mouseEvents={mouseEvents} verdict={verdict} features={features} />
           <ConfidenceTimeline history={sessionHistory} />
         </div>
 
