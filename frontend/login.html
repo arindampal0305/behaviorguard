@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,10 +9,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- BehaviorGuard signal collector loads silently — user never sees this -->
-  <script src="/src/behaviorguard.js"></script>
+
 
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
       --bg: #f8fafc;
@@ -51,7 +58,7 @@
       padding: 3rem 2.5rem 2.5rem;
       width: 100%;
       max-width: 420px;
-      box-shadow: 0 4px 32px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
       position: relative;
       z-index: 1;
     }
@@ -71,7 +78,7 @@
       justify-content: center;
       font-size: 24px;
       margin-bottom: 1rem;
-      box-shadow: 0 4px 16px rgba(37,99,235,0.25);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
     }
 
     h1 {
@@ -87,7 +94,9 @@
       margin-top: 0.3rem;
     }
 
-    .form-group { margin-bottom: 1.25rem; }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
 
     label {
       display: block;
@@ -113,7 +122,7 @@
 
     input:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
 
     .btn-login {
@@ -131,8 +140,13 @@
       margin-top: 0.5rem;
     }
 
-    .btn-login:hover { background: var(--accent-hover); }
-    .btn-login:active { transform: scale(0.99); }
+    .btn-login:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-login:active {
+      transform: scale(0.99);
+    }
 
     .divider {
       display: flex;
@@ -142,7 +156,9 @@
       color: var(--text-muted);
       font-size: 0.75rem;
     }
-    .divider::before, .divider::after {
+
+    .divider::before,
+    .divider::after {
       content: '';
       flex: 1;
       height: 1px;
@@ -156,8 +172,14 @@
       margin-top: 1rem;
     }
 
-    .forgot a { color: var(--accent); text-decoration: none; }
-    .forgot a:hover { text-decoration: underline; }
+    .forgot a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .forgot a:hover {
+      text-decoration: underline;
+    }
 
     /* BehaviorGuard indicator — subtle, in bottom corner */
     .bg-badge {
@@ -171,6 +193,7 @@
       color: #94a3b8;
       user-select: none;
     }
+
     .bg-dot {
       width: 6px;
       height: 6px;
@@ -178,9 +201,17 @@
       border-radius: 50%;
       animation: pulse 2s infinite;
     }
+
     @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
     }
 
     /* Result overlay */
@@ -188,13 +219,16 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(8px);
       z-index: 100;
       align-items: center;
       justify-content: center;
     }
-    #result-overlay.show { display: flex; }
+
+    #result-overlay.show {
+      display: flex;
+    }
 
     .result-card {
       background: white;
@@ -203,11 +237,26 @@
       max-width: 380px;
       width: 90%;
       text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
-    .result-icon { font-size: 3rem; margin-bottom: 1rem; }
-    .result-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .result-score { font-size: 0.9rem; color: #64748b; margin-bottom: 1.5rem; }
+
+    .result-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .result-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-score {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-bottom: 1.5rem;
+    }
+
     .result-close {
       background: #1e293b;
       color: white;
@@ -225,17 +274,29 @@
       display: none;
       width: 16px;
       height: 16px;
-      border: 2px solid rgba(255,255,255,0.3);
+      border: 2px solid rgba(255, 255, 255, 0.3);
       border-top-color: white;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
       margin: 0 auto;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .btn-login.loading .spinner { display: block; }
-    .btn-login.loading .btn-text { display: none; }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .btn-login.loading .spinner {
+      display: block;
+    }
+
+    .btn-login.loading .btn-text {
+      display: none;
+    }
   </style>
 </head>
+
 <body>
   <div class="bg-pattern"></div>
 
@@ -249,26 +310,13 @@
     <form id="login-form" onsubmit="handleSubmit(event)">
       <div class="form-group">
         <label for="email">Email address</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="you@company.com"
-          autocomplete="email"
-          required
-        />
+        <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email" required />
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Enter your password"
-          autocomplete="current-password"
-          required
-        />
+        <input type="password" id="password" name="password" placeholder="Enter your password"
+          autocomplete="current-password" required />
       </div>
 
       <button type="submit" class="btn-login" id="submit-btn">
@@ -309,7 +357,7 @@
 
       // BehaviorGuard submits signals on form submit via its own listener.
       // We wait for the result event.
-      document.addEventListener('behaviorguard:result', function(ev) {
+      document.addEventListener('behaviorguard:result', function (ev) {
         btn.classList.remove('loading');
         btn.disabled = false;
 
@@ -349,5 +397,7 @@
       }, 3000);
     }
   </script>
+  <script type="module" src="/src/behaviorguard.js"></script>
 </body>
+
 </html>
