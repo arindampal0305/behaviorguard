@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  const API_ENDPOINT = 'http://localhost:8000/analyze';
+  const API_ENDPOINT = 'https://behaviorguard-backend.onrender.com/analyze';
   const THROTTLE_MS = 16; // ~60fps throttle for mouse events
 
   // Session ID
