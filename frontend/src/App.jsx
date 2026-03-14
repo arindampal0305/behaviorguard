@@ -11,8 +11,8 @@ import VerdictBanner from './components/VerdictBanner.jsx';
 import AdversarialSlider from './components/AdversarialSlider.jsx';
 import RawSignals from './components/RawSignals.jsx';
 
-const API = 'http://localhost:8000';
-const WS_URL = 'ws://localhost:8000/ws/stream';
+const API = 'https://behaviorguard-backend.onrender.com';
+const WS_URL = 'wss://behaviorguard-backend.onrender.com/ws/stream';
 
 export default function App() {
   // Current session state
@@ -85,7 +85,7 @@ export default function App() {
           setSessionHistory(data);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
     return () => {
       clearTimeout(reconnectTimer.current);
       if (wsRef.current) wsRef.current.close();
@@ -145,10 +145,10 @@ export default function App() {
   // Signal count: sum of counts from features
   const signalCount = features
     ? Math.round(
-        (features.mouse_event_count || 0) +
-        (features.keystroke_count || 0) +
-        (features.scroll_event_count || 0)
-      )
+      (features.mouse_event_count || 0) +
+      (features.keystroke_count || 0) +
+      (features.scroll_event_count || 0)
+    )
     : 0;
 
   return (
